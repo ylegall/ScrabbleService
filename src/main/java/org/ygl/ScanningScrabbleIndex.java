@@ -28,6 +28,7 @@ public class ScanningScrabbleIndex implements ScrabbleIndex {
                 .filter(line -> !line.isEmpty() && !line.contains("'"))
                 .map(String::toLowerCase)
                 .map(word -> new ScrabbleWord(word, wordScore.getScore(word), getLetterCounts(word)))
+                .sorted(Comparator.comparingInt(ScrabbleWord::getScore).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -43,7 +44,6 @@ public class ScanningScrabbleIndex implements ScrabbleIndex {
 
         return words.stream()
                 .filter(word -> canMakeWord(counts, word))
-                .sorted(Comparator.comparingInt(ScrabbleWord::getScore).reversed())
                 .map(ScrabbleWord::getWord)
                 .collect(Collectors.toList());
     }
